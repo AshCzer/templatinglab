@@ -71,7 +71,7 @@ public class Main {
         Recipe<Ingredient> recipe = new Recipe<>(name, instructions);
         boolean exit = false;
         int uInput = menu(s);
-        while (!exit) {
+        while (!exit && uInput != 3) {
             if (uInput == 1) {
                 addIngredient(recipe, s);
             } else if (uInput == 2) {
