@@ -71,14 +71,12 @@ public class Main {
         while (!exit) {
             if (uInput == 1) {
                 addIngredient(recipe, s);
-                uInput = menu(s);
             } else if (uInput == 2) {
                 recipe.print();
-                uInput = menu(s);
-
             } else {
                 exit = true;
             }
+            uInput = menu(s);
         }
 
     }
