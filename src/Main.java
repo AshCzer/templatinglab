@@ -1,4 +1,5 @@
-import java.util.ArrayList;
+import java.util.*;
+import java.io.*;
 
 interface Ingredient{
     String getName();
@@ -6,54 +7,119 @@ interface Ingredient{
 }
 class SolidIngredient implements Ingredient{
     private String _name;
-    private double _quantity;
-    public SolidIngredient(String name, double quantity){
+    private double _quantityG;
+    public SolidIngredient(String name, double quantityG){
         _name = name;
-        _quantity = quantity;
+        _quantityG = quantityG;
     }
     public String getName() {
         return _name;
     }
     public double getQuantity() {
-        return _quantity;
+        return _quantityG;
     }
 }
 class LiquidIngredient implements Ingredient{
 
     private String _name;
-    private double _quantity;
-    public LiquidIngredient(String name, double quantity){
+    private double _quantityMl;
+    public LiquidIngredient(String name, double quantityMl){
         _name = name;
-        _quantity = quantity;
+        _quantityMl = quantityMl;
     }
     public String getName() {
         return _name;
     }
 
     public double getQuantity() {
-        return _quantity;
+        return _quantityMl;
     }
 }
 class Recipe<T extends Ingredient>{
     private String _name;
-    private String instructions;
-    private ArrayList<Ingredient> ingredients = new ArrayList<>();
+    private String _instructions;
+    private ArrayList<T> _ingredients;
 
-    public Recipe(){ //MAKE NARG
-        ingredients = new ArrayList<>();
+    public Recipe(String name, String instructions){
+        _name = name;
+        _instructions = instructions;
+        _ingredients = new ArrayList<>();
     }
-    public void addIngredient(Ingredient ing){
-        ingredients.add(ing);
+    public void addIngredient(T ing){
+        _ingredients.add(ing);
     }
-    public void print(){
-        for (int i=0; i<; i++){
-            System.out.println();
+    public void print() {
+        System.out.println("Recipe: " + _name);
+        System.out.println("Instructions: " + _instructions);
+        System.out.println("Ingredients: ");
+        for (T t : _ingredients){
+            System.out.println("\t-" + t.getName() + ": " + t.getQuantity());
         }
     }
 }
 
 public class Main {
     public static void main(String[] args) {
+        Scanner s = new Scanner(System.in);
+        System.out.println("Enter recipe name: ");
+        String name = s.nextLine();
+        System.out.println("Enter instructions: ");
+        String instructions = s.nextLine();
+        Recipe<Ingredient> recipe = new Recipe<>(name, instructions);
+        boolean exit = false;
+        int uInput = menu(s);
+        while (!exit) {
+            if (uInput == 1) {
+                addIngredient(recipe, s);
+                uInput = menu(s);
+            } else if (uInput == 2) {
+                recipe.print();
+                uInput = menu(s);
 
+            } else {
+                exit = true;
+            }
+        }
+
+    }
+    public static int menu(Scanner s) {
+        int uInput = 0;
+        boolean valid = false;
+        while (!valid) {
+            System.out.println("\nRecipe Menu:");
+            System.out.println("1. Add ingredient");
+            System.out.println("2. List ingredients");
+            System.out.println("3. Exit");
+            System.out.println("Enter the number corresponding to your choice: ");
+            try {
+                uInput = Integer.parseInt(s.nextLine());
+                if (uInput == 1 || uInput == 2 || uInput == 3){
+                    valid = true;
+                }
+                else {
+                    System.out.println("Not a valid choice. Please try again: ");
+                }
+            } catch (Exception e) {
+                System.out.println("Not a valid choice. Please try again: ");
+
+            }
+        }
+        return uInput;
+    }
+    public static void addIngredient(Recipe<Ingredient> recipe, Scanner s){
+        System.out.println("Is this a solid (s) or liquid (l)");
+        char type = s.nextLine().toLowerCase().charAt(0);
+        System.out.println("Enter ingredient name: ");
+        String name = s.nextLine();
+        System.out.println("Enter the ingredient's quantity: ");
+        double quantity = Double.parseDouble(s.nextLine());
+        Ingredient ingredient;
+        if (type == 's'){
+            ingredient = new SolidIngredient(name, quantity);
+        }
+        else{
+            ingredient = new LiquidIngredient(name, quantity);
+        }
+        recipe.addIngredient(ingredient);
     }
 }
