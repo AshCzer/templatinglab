@@ -56,6 +56,9 @@ class Recipe<T extends Ingredient>{
             System.out.println("\t-" + t.getName() + ": " + t.getQuantity());
         }
     }
+    public ArrayList<T> getIngredients() {
+        return _ingredients;
+    }
 }
 
 public class Main {
