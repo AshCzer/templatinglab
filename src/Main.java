@@ -69,41 +69,31 @@ public class Main {
         System.out.println("Enter instructions: ");
         String instructions = s.nextLine();
         Recipe<Ingredient> recipe = new Recipe<>(name, instructions);
-        boolean exit = false;
         int uInput = menu(s);
-        while (!exit && uInput != 3) {
+        while (uInput != 3) {
             if (uInput == 1) {
                 addIngredient(recipe, s);
             } else if (uInput == 2) {
                 recipe.print();
             } else {
-                exit = true;
+                System.out.println("Not a valid choice. Please try again: ");
             }
             uInput = menu(s);
         }
-
     }
     public static int menu(Scanner s) {
         int uInput = 0;
         boolean valid = false;
-        while (!valid) {
-            System.out.println("\nRecipe Menu:");
-            System.out.println("1. Add ingredient");
-            System.out.println("2. List ingredients");
-            System.out.println("3. Exit");
-            System.out.println("Enter the number corresponding to your choice: ");
-            try {
-                uInput = Integer.parseInt(s.nextLine());
-                if (uInput == 1 || uInput == 2 || uInput == 3){
-                    valid = true;
-                }
-                else {
-                    System.out.println("Not a valid choice. Please try again: ");
-                }
-            } catch (Exception e) {
-                System.out.println("Not a valid choice. Please try again: ");
-
-            }
+        System.out.println("\nRecipe Menu:");
+        System.out.println("1. Add ingredient");
+        System.out.println("2. List ingredients");
+        System.out.println("3. Exit");
+        System.out.println("Enter the number corresponding to your choice: ");
+        try {
+            uInput = Integer.parseInt(s.nextLine());
+        }
+        catch (Exception e) {
+            System.out.println("Not a valid choice. Please try again: ");
         }
         return uInput;
     }
